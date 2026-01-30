@@ -72,6 +72,7 @@ export function useRetell() {
                 // 3. Start Call with minimal config
                 await retellWebClient.current?.startCall({
                     accessToken: data.access_token,
+                    sampleRate: 24000,
                 })
 
                 // 4. Force Resume Audio Context (Fix for Chrome/Edge auto-play policy)
