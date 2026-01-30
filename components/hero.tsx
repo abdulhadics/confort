@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useRetell } from "@/hooks/use-retell"
 
 export function Hero() {
-    const { isCalling, toggleCall } = useRetell()
+    const { isCalling, toggleCall, isAgentSpeaking } = useRetell()
 
     return (
         <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-primary/20 to-white">
