@@ -69,12 +69,9 @@ export function useRetell() {
 
                 console.log("Starting call with token...")
 
-                // 3. Start Call with explicit configuration
+                // 3. Start Call with minimal config to let SDK match browser defaults
                 await retellWebClient.current?.startCall({
                     accessToken: data.access_token,
-                    sampleRate: 24000,
-                    captureDeviceId: "default",
-                    playbackDeviceId: "default"
                 })
 
                 // 4. Force Resume Audio Context (Fix for Chrome auto-play policy)
