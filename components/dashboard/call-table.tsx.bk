@@ -1,0 +1,114 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
+import type { Call } from "@/types/database"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
+} from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { formatDistanceToNow } from "date-fns"
+import { Play } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+export function CallTable({ initialCalls }: { initialCalls: Call[] }) {
+    const [calls, setCalls] = useState<Call[]>(initialCalls)
+
+    useEffect(() => {
+        const channel = supabase
+            .channel('realtime calls')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'calls'
+            }, (payload) => {
+                console.log('Realtime Event:', payload)
+
+                if (payload.eventType === 'INSERT') {
+                    setCalls((current) => [payload.new as Call, ...current])
+                }
+                else if (payload.eventType === 'UPDATE') {
+                    setCalls((current) => current.map(call =>
+                        call.id === (payload.new as Call).id ? (payload.new as Call) : call
+                    ))
+                }
+                else if (payload.eventType === 'DELETE') {
+                    setCalls((current) => current.filter(call =>
+                        call.id !== (payload.old as { id: number }).id
+                    ))
+                }
+            })
+            .subscribe()
+
+        return () => {
+            supabase.removeChannel(channel)
+        }
+    }, [])
+
+    return (
+        <div className="rounded-md border">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Score</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Summary</TableHead>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Audio</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {calls.map((call) => (
+                        <TableRow key={call.id}>
+                            <TableCell>
+                                <Badge variant={
+                                    call.status === 'Urgent' ? 'destructive' :
+                                        call.status === 'Qualified' ? 'default' : 'secondary'
+                                }>
+                                    {call.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs font-bold w-6">{call.lead_score}</span>
+                                    <Progress value={call.lead_score || 0} className={`w-16 h-2 ${(call.lead_score || 0) > 70 ? "bg-green-100" : ""
+                                        }`} />
+                                </div>
+                            </TableCell>
+                            <TableCell className="font-medium">{call.caller_number}</TableCell>
+                            <TableCell className="max-w-md truncate" title={call.summary || ""}>
+                                {call.summary || "Processing..."}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground whitespace-nowrap">
+                                {formatDistanceToNow(new Date(call.created_at), { addSuffix: true })}
+                            </TableCell>
+                            <TableCell>
+                                {call.recording_url ? (
+                                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => window.open(call.recording_url || "", "_blank")}>
+                                        <Play className="h-4 w-4" />
+                                    </Button>
+                                ) : (
+                                    <span className="text-xs text-muted-foreground">...</span>
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                    {calls.length === 0 && (
+                        <TableRow>
+                            <TableCell colSpan={6} className="text-center h-24 text-muted-foreground">
+                                No calls yet. Waiting for Isabelle...
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </div>
+    )
+}

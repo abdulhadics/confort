@@ -1,0 +1,28 @@
+import { NextResponse } from "next/server"
+import Retell from "retell-sdk"
+
+const retell = new Retell({
+    apiKey: process.env.RETELL_API_KEY || "key_placeholder",
+})
+
+export async function GET() {
+    try {
+        const agentId = process.env.RETELL_AGENT_ID;
+
+        if (!agentId) {
+            throw new Error("Missing RETELL_AGENT_ID");
+        }
+
+        const registerCallResponse = await retell.call.createWebCall({
+            agent_id: agentId,
+        })
+
+        return NextResponse.json(registerCallResponse)
+    } catch (error) {
+        console.error("Error registering call:", error)
+        return NextResponse.json(
+            { error: "Failed to register call" },
+            { status: 500 }
+        )
+    }
+}

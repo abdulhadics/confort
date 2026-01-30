@@ -1,0 +1,77 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "path": "retell-webhook",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                0,
+                0
+            ],
+            "id": "webhook-node",
+            "name": "Retell Webhook"
+        },
+        {
+            "parameters": {
+                "jsCode": "// Extract Data\nconst call = $input.all()[0].json;\nconst transcript = call.transcript || \"\";\nconst summary = call.call_analysis?.call_summary || \"No summary\";\nconst caller_number = call.from_number || \"Unknown\";\nconst call_id = call.call_id;\nconst recording_url = call.recording_url;\n\n// Lead Scoring Logic\nlet score = 10;\nlet status = \"New\";\n\nconst keywords = {\n  high: ['homeowner', 'quote', 'buy', 'immediately', 'broken'],\n  medium: ['price', 'cost', 'schedule', 'tomorrow'],\n  negative: ['renter', 'wrong number', 'spam']\n};\n\n// Calculate Score\nif (keywords.high.some(w => transcript.toLowerCase().includes(w))) score += 40;\nif (keywords.medium.some(w => transcript.toLowerCase().includes(w))) score += 20;\nif (keywords.negative.some(w => transcript.toLowerCase().includes(w))) score -= 50;\n\n// Determine Status\nif (score >= 60) status = \"Qualified\";\nif (score >= 80) status = \"Urgent\";\nif (score < 0) status = \"Spam\";\n\nreturn {\n  call_id,\n  caller_number,\n  transcript,\n  summary,\n  lead_score: score,\n  status,\n  recording_url\n};"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                250,
+                0
+            ],
+            "id": "scoring-logic",
+            "name": "Lead Scoring AI"
+        },
+        {
+            "parameters": {
+                "tableId": "calls",
+                "operation": "insert",
+                "columns": "call_id, caller_number, transcript, summary, lead_score, status, recording_url"
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                500,
+                0
+            ],
+            "id": "supabase-insert",
+            "name": "Insert to Dashboard",
+            "credentials": {
+                "supabaseApi": {
+                    "id": "YOUR_CREDENTIAL_ID_HERE",
+                    "name": "Supabase account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Retell Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Lead Scoring AI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Lead Scoring AI": {
+            "main": [
+                [
+                    {
+                        "node": "Insert to Dashboard",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
