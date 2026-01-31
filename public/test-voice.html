@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice Test (Raw)</title>
+    <script src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.global.js"></script>
+    <style>body{font-family:sans-serif;padding:20px;text-align:center}button{padding:20px;font-size:20px;cursor:pointer}</style>
+</head>
+<body>
+    <h1>Raw Voice Test</h1>
+    <p>This page bypasses React/Next.js to test pure connectivity.</p>
+    <button id="callBtn" onclick="toggleCall()">Start Call</button>
+    <div id="status" style="margin-top:20px;color:gray">Ready</div>
+
+    <script>
+        const client = new RetellWebClient();
+        let isCalling = false;
+
+        async function toggleCall() {
+            const btn = document.getElementById('callBtn');
+            const status = document.getElementById('status');
+
+            if (isCalling) {
+                client.stopCall();
+                isCalling = false;
+                btn.innerText = "Start Call";
+                status.innerText = "Stopped";
+                return;
+            }
+
+            try {
+                status.innerText = "Getting Token...";
+                // Use the renamed route to force freshness
+                const resp = await fetch('/api/get-voice-token?raw=' + Date.now(), { method: 'POST' });
+                const data = await resp.json();
+                
+                status.innerText = "Starting SDK...";
+                
+                await client.startCall({
+                    accessToken: data.access_token
+                });
+                
+                isCalling = true;
+                btn.innerText = "Stop Call";
+                status.innerText = "Connected (Speak Now)";
+                
+                client.on("call_ended", () => {
+                    isCalling = false;
+                    btn.innerText = "Start Call";
+                    status.innerText = "Ended";
+                });
+                
+                client.on("error", (err) => {
+                   status.innerText = "Error: " + err.message;
+                });
+
+            } catch (e) {
+                status.innerText = "Error: " + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
