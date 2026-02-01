@@ -52,9 +52,9 @@ export function useRetell() {
                 setIsCalling(false)
             })
 
-            // 3. Get Token (Renamed Route to force update)
-            console.log("Fetching token from NEW route...")
-            const response = await fetch(`/api/get-voice-token?t=${Date.now()}&r=${Math.random()}`, {
+            // 3. Get Token (Renamed Route V2 to force update)
+            console.log("Fetching token from V2 route...")
+            const response = await fetch(`/api/voice-token-v2?t=${Date.now()}&r=${Math.random()}`, {
                 method: "POST",
                 cache: "no-store",
                 headers: {

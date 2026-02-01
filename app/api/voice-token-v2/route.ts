@@ -8,19 +8,29 @@ const retell = new Retell({
     apiKey: process.env.RETELL_API_KEY || "key_placeholder",
 })
 
-export async function POST() {
+export async function POST(request: Request) {
     try {
-        const agentId = process.env.RETELL_AGENT_ID;
+        const body = await request.json()
+        const { agent_id } = body
 
-        if (!agentId) {
-            throw new Error("Missing RETELL_AGENT_ID");
+        if (!agent_id) {
+            return NextResponse.json(
+                { error: "Missing agent_id in request body" },
+                { status: 400 }
+            )
         }
 
         const registerCallResponse = await retell.call.createWebCall({
-            agent_id: agentId,
+            agent_id: agent_id,
         })
 
-        return NextResponse.json(registerCallResponse)
+        return NextResponse.json(registerCallResponse, {
+            headers: {
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            }
+        })
     } catch (error) {
         console.error("Error registering call:", error)
         return NextResponse.json(
