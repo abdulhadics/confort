@@ -59,7 +59,8 @@ export function useRetell() {
                 cache: "no-store",
                 body: JSON.stringify({}),
                 headers: {
-                    "Pragma": "no-cache"
+                    "Pragma": "no-cache",
+                    "Content-Type": "application/json"
                 }
             })
             if (!response.ok) throw new Error("API Error")
