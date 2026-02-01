@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import Retell from "retell-sdk"
 
 export const dynamic = "force-dynamic" // Prevent caching of the token
+export const runtime = "nodejs" // Ensure robust crypto availability
 
 const retell = new Retell({
     apiKey: process.env.RETELL_API_KEY || "key_placeholder",
