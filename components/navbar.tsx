@@ -22,9 +22,6 @@ export function Navbar() {
                     <Link href="/" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
                         Home
                     </Link>
-                    <Link href="/dashboard/messages" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
-                        Messages
-                    </Link>
                     <Link href="/#hvac" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
                         HVAC
                     </Link>
