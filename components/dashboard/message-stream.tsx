@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -17,7 +17,6 @@ type Message = {
 export function MessageStream() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(true);
-    const supabase = createClient();
 
     useEffect(() => {
         fetchMessages();
@@ -67,8 +66,8 @@ export function MessageStream() {
                         >
                             <div
                                 className={`max-w-[80%] p-3 rounded-lg shadow-sm ${msg.direction === "outbound"
-                                        ? "bg-blue-600 text-white rounded-br-none"
-                                        : "bg-gray-100 text-gray-800 rounded-bl-none dark:bg-zinc-800 dark:text-gray-200"
+                                    ? "bg-blue-600 text-white rounded-br-none"
+                                    : "bg-gray-100 text-gray-800 rounded-bl-none dark:bg-zinc-800 dark:text-gray-200"
                                     }`}
                             >
                                 <div className="text-xs opacity-70 mb-1 flex justify-between gap-4">
