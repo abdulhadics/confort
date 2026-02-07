@@ -27,6 +27,7 @@ export default function RootLayout({
           GeistMono.variable,
           "flex flex-col min-h-screen"
         )}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
