@@ -56,10 +56,10 @@ export function ChatWidget() {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+        <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-2 isolate">
             {/* Chat Window */}
             {isOpen && (
-                <div className="w-[350px] h-[500px] bg-white dark:bg-zinc-900 border border-border rounded-lg shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+                <div className="w-[350px] h-[500px] bg-white dark:bg-zinc-900 border-2 border-primary rounded-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
                     {/* Header */}
                     <div className="bg-primary p-4 flex justify-between items-center text-primary-foreground">
                         <div className="flex items-center gap-2">
