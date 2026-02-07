@@ -18,16 +18,18 @@ export function Navbar() {
                     <span className="font-bold text-xl tracking-tight hidden sm:block">Confort Prestige</span>
                 </Link>
 
-                {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-8">
+                    <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
+                        Dashboard
+                    </Link>
+                    <Link href="/dashboard/messages" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
+                        Messages
+                    </Link>
                     <Link href="/#hvac" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
                         HVAC
                     </Link>
                     <Link href="/#windows" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
                         Windows
-                    </Link>
-                    <Link href="/#about" className="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">
-                        About Us
                     </Link>
                 </div>
 
