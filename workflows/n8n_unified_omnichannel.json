@@ -1,0 +1,176 @@
+{
+    "name": "Confort Prestige - Unified Omnichannel Agent",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "retell-webhook",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                0,
+                0
+            ],
+            "id": "webhook-retell",
+            "name": "Retell Webhook (Voice)"
+        },
+        {
+            "parameters": {
+                "updates": [
+                    "message-received"
+                ],
+                "options": {}
+            },
+            "type": "n8n-nodes-base.twilioTrigger",
+            "typeVersion": 1,
+            "position": [
+                0,
+                300
+            ],
+            "id": "trigger-twilio",
+            "name": "Twilio Trigger (SMS)",
+            "credentials": {
+                "twilioApi": {
+                    "id": "YOUR_TWILIO_CREDENTIAL_ID",
+                    "name": "Twilio account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "// Voice Processing Logic\nconst call = $input.all()[0].json;\nreturn {\n  type: 'voice',\n  call_id: call.call_id,\n  transcript: call.transcript,\n  from_number: call.from_number\n};"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                250,
+                0
+            ],
+            "id": "process-voice",
+            "name": "Process Voice Data"
+        },
+        {
+            "parameters": {
+                "resource": "chat",
+                "prompt": {
+                    "messages": [
+                        {
+                            "role": "system",
+                            "content": "You are Isabelle, a scheduler for Confort Prestige..."
+                        },
+                        {
+                            "role": "user",
+                            "content": "={{$json.Body}}"
+                        }
+                    ]
+                },
+                "model": "gpt-4"
+            },
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ],
+            "id": "openai-agent",
+            "name": "OpenAI Agent (SMS)",
+            "credentials": {
+                "openAiApi": {
+                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
+                    "name": "OpenAI account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "tableId": "calls",
+                "operation": "insert",
+                "columns": "call_id, transcript, from_number"
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                500,
+                0
+            ],
+            "id": "save-voice",
+            "name": "Save Call to DB",
+            "credentials": {
+                "supabaseApi": {
+                    "id": "YOUR_SUPABASE_CREDENTIAL_ID",
+                    "name": "Supabase account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "send",
+                "to": "={{$node[\"Twilio Trigger (SMS)\"].json.From}}",
+                "from": "+18707298115",
+                "message": "={{$json.message.content}}"
+            },
+            "type": "n8n-nodes-base.twilio",
+            "typeVersion": 1,
+            "position": [
+                500,
+                300
+            ],
+            "id": "send-sms",
+            "name": "Reply via SMS",
+            "credentials": {
+                "twilioApi": {
+                    "id": "YOUR_TWILIO_CREDENTIAL_ID",
+                    "name": "Twilio account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Retell Webhook (Voice)": {
+            "main": [
+                [
+                    {
+                        "node": "Process Voice Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Process Voice Data": {
+            "main": [
+                [
+                    {
+                        "node": "Save Call to DB",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Twilio Trigger (SMS)": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI Agent (SMS)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Agent (SMS)": {
+            "main": [
+                [
+                    {
+                        "node": "Reply via SMS",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

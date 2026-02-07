@@ -45,8 +45,12 @@ export function CallTable() {
                             <TableHead className="font-semibold text-slate-700">Status</TableHead>
                             <TableHead className="font-semibold text-slate-700">Score</TableHead>
                             <TableHead className="font-semibold text-slate-700">Phone</TableHead>
-                            <TableHead className="font-semibold text-slate-700">Summary</TableHead>
-                            <TableHead className="font-semibold text-slate-700">Time</TableHead>
+                            <TableHead className="hidden md:table-cell">Summary</TableHead>
+                            <TableHead>Duration</TableHead>
+                            <TableHead>Cost</TableHead>
+                            <TableHead>Sentiment</TableHead>
+                            <TableHead className="hidden md:table-cell">End Reason</TableHead>
+                            <TableHead className="hidden md:table-cell">Time</TableHead>
                             <TableHead className="font-semibold text-slate-700 text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -73,6 +77,24 @@ export function CallTable() {
                                 </TableCell>
                                 <TableCell className="text-slate-500 whitespace-nowrap text-sm">
                                     {call.created_at ? formatDistanceToNow(new Date(call.created_at), { addSuffix: true }) : 'Just now'}
+                                </TableCell>
+                                <TableCell className="font-mono text-xs">
+                                    {call.duration_seconds ? `${Math.floor(call.duration_seconds / 60)}m ${call.duration_seconds % 60}s` : '-'}
+                                </TableCell>
+                                <TableCell className="font-mono text-xs text-slate-500">
+                                    {call.cost ? `$${Number(call.cost).toFixed(2)}` : '-'}
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant="outline" className={
+                                        call.sentiment === 'Positive' ? 'text-green-600 border-green-200 bg-green-50' :
+                                            call.sentiment === 'Negative' ? 'text-red-600 border-red-200 bg-red-50' :
+                                                'text-slate-600 border-slate-200'
+                                    }>
+                                        {call.sentiment || 'Neutral'}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="text-xs text-slate-500 hidden md:table-cell">
+                                    {call.disconnection_reason?.replace('_', ' ') || '-'}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-1">
