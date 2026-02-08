@@ -1,4 +1,5 @@
 import { CallTable } from "@/components/dashboard/call-table"
+import { MessageStream } from "@/components/dashboard/message-stream"
 import { LeadScoreChart } from "@/components/dashboard/lead-score-chart"
 import SignOutButton from "@/components/auth/sign-out-button"
 
