@@ -30,7 +30,7 @@ export function Navbar() {
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-end gap-1">
                     <Button
                         onClick={toggleCall}
                         className={`gap-2 transition-all ${isCalling ? "bg-destructive hover:bg-destructive/90 animate-pulse" : "bg-primary hover:bg-primary/90 text-primary-foreground"}`}
@@ -42,6 +42,9 @@ export function Navbar() {
                                 : "Call Isabelle"}
                         </span>
                     </Button>
+                    <a href="sms:+18707298115" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
+                        Or Text Us: (870) 729-8115
+                    </a>
                 </div>
             </div>
         </nav>
