@@ -6,7 +6,6 @@ import { Navbar } from "@/components/navbar";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ChatWidget } from "@/components/chat-widget";
 
 export const dynamic = "force-dynamic";
 
@@ -39,7 +38,6 @@ export default function RootLayout({
           <Navbar />
 
           {children}
-          <ChatWidget />
           <Toaster position="top-center" richColors={true} />
         </ThemeProvider>
       </body>
