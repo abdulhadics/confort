@@ -46,11 +46,11 @@ export function CallTable() {
                             <TableHead className="font-semibold text-slate-700">Score</TableHead>
                             <TableHead className="font-semibold text-slate-700">Phone</TableHead>
                             <TableHead className="hidden md:table-cell">Summary</TableHead>
+                            <TableHead>Time</TableHead>
                             <TableHead>Duration</TableHead>
                             <TableHead>Cost</TableHead>
                             <TableHead>Sentiment</TableHead>
                             <TableHead className="hidden md:table-cell">End Reason</TableHead>
-                            <TableHead className="hidden md:table-cell">Time</TableHead>
                             <TableHead className="font-semibold text-slate-700 text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
