@@ -45,6 +45,17 @@ export default function DashboardPage() {
                 <h2 className="text-xl font-semibold text-slate-800 mb-4">Recent Inbound Calls</h2>
                 <CallTable />
             </div>
+
+            {/* SMS Dashboard Section */}
+            <div className="pt-8 border-t border-slate-200">
+                <h2 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                    <span>Recent SMS Interactions</span>
+                    <span className="text-xs font-normal text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">Live</span>
+                </h2>
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden h-[600px]">
+                    <MessageStream />
+                </div>
+            </div>
         </div>
     )
 }
