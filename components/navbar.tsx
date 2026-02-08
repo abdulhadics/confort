@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useRetell } from "@/hooks/use-retell"
 
 export function Navbar() {
+    const { isCalling, toggleCall, isAgentSpeaking } = useRetell()
     return (
         <nav className="border-b border-primary/10 bg-background/80 backdrop-blur-md fixed top-0 w-full z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -30,9 +31,17 @@ export function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <a href="sms:+18707298115" className="hidden sm:flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-                        <span>Text Us: (870) 729-8115</span>
-                    </a>
+                    <Button
+                        onClick={toggleCall}
+                        className={`gap-2 transition-all ${isCalling ? "bg-destructive hover:bg-destructive/90 animate-pulse" : "bg-primary hover:bg-primary/90 text-primary-foreground"}`}
+                    >
+                        <Phone className="w-4 h-4" />
+                        <span>
+                            {isCalling
+                                ? (isAgentSpeaking ? "Isabelle Speaking..." : "Listening...")
+                                : "Call Isabelle"}
+                        </span>
+                    </Button>
                 </div>
             </div>
         </nav>
