@@ -11,4 +11,5 @@ export interface CallLog {
     cost?: number
     sentiment?: string
     disconnection_reason?: string
+    recording_url?: string | null
 }
