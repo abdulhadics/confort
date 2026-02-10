@@ -42,8 +42,8 @@ export function Navbar() {
                                 : "Call Isabelle"}
                         </span>
                     </Button>
-                    <a href="sms:+18707298115" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
-                        Or Text Us: (870) 729-8115
+                    <a href="sms:+18123105480" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
+                        Or Text Us: (812) 310-5480
                     </a>
                 </div>
             </div>
