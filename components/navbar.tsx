@@ -42,12 +42,12 @@ export function Navbar() {
                                 : "Call Isabelle"}
                         </span>
                     </Button>
-                    <a href="tel:+15795002533" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
-                        Call Us: (579) 500-2533
-                    </a>
-                    <a href="sms:+15795002533" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
-                        Text Us: (579) 500-2533
-                    </a>
+                    <div className="flex items-center gap-1 text-xs text-slate-500 font-medium">
+                        <span>Call/Text:</span>
+                        <a href="tel:+15795002533" className="hover:text-amber-600 transition-colors">
+                            (579) 500-2533
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
