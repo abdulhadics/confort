@@ -42,8 +42,11 @@ export function Navbar() {
                                 : "Call Isabelle"}
                         </span>
                     </Button>
+                    <a href="tel:+15795002533" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
+                        Call Us: (579) 500-2533
+                    </a>
                     <a href="sms:+15795002533" className="text-xs text-slate-500 hover:text-amber-600 transition-colors">
-                        Or Text Us: (579) 500-2533
+                        Text Us: (579) 500-2533
                     </a>
                 </div>
             </div>

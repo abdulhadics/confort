@@ -51,12 +51,18 @@ export function Hero() {
                     </Button>
                 </div>
 
-                <div className="mt-4 flex justify-center">
+                <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="tel:+15795002533" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors hover:underline underline-offset-4">
+                        <span className="bg-primary/10 p-1.5 rounded-full">
+                            <Phone className="w-4 h-4 text-primary" />
+                        </span>
+                        Call Us: (579) 500-2533
+                    </a>
                     <a href="sms:+15795002533" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors hover:underline underline-offset-4">
                         <span className="bg-primary/10 p-1.5 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                         </span>
-                        Or Text Us: (579) 500-2533
+                        Text Us: (579) 500-2533
                     </a>
                 </div>
 
