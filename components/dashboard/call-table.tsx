@@ -73,7 +73,7 @@ export function CallTable() {
                                 </TableCell>
                                 <TableCell className="font-medium text-slate-900">{call.caller_number}</TableCell>
                                 <TableCell className="max-w-md truncate text-slate-500" title={call.summary || ""}>
-                                    {call.summary || "Processing..."}
+                                    {call.summary || ((call.duration_seconds || 0) < 10 ? "Call too short for summary" : "Processing...")}
                                 </TableCell>
                                 <TableCell className="text-slate-500 whitespace-nowrap text-sm">
                                     {call.created_at ? formatDistanceToNow(new Date(call.created_at), { addSuffix: true }) : 'Just now'}

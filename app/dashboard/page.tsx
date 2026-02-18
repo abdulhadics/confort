@@ -1,6 +1,6 @@
 import { CallTable } from "@/components/dashboard/call-table"
 import { MessageStream } from "@/components/dashboard/message-stream"
-import { LeadScoreChart } from "@/components/dashboard/lead-score-chart"
+import { DashboardCharts } from "@/components/dashboard/dashboard-charts"
 import SignOutButton from "@/components/auth/sign-out-button"
 
 // Force dynamic rendering so we get fresh data on page load
@@ -26,19 +26,9 @@ export default function DashboardPage() {
             </div>
 
             {/* Metrics Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="md:col-span-2">
-                    <LeadScoreChart />
-                </div>
-
-                {/* Reserved for Future Metrics or Quick Actions */}
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 flex flex-col justify-center items-center text-center">
-                    <h3 className="text-lg font-semibold text-slate-700 mb-2">Pipedrive Sync</h3>
-                    <p className="text-sm text-slate-500 mb-4">CRM integration status</p>
-                    <div className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full">
-                        Pending Configuration
-                    </div>
-                </div>
+            {/* Metrics Section */}
+            <div className="mb-8">
+                <DashboardCharts />
             </div>
 
             {/* Main Table */}
