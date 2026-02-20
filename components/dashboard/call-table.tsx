@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useCalls } from "@/hooks/use-calls"
 import {
     Table,
@@ -22,6 +22,17 @@ export function CallTable() {
     const { calls, isLoading } = useCalls()
     const [selectedCall, setSelectedCall] = useState<CallLog | null>(null)
     const [isTranscriptOpen, setIsTranscriptOpen] = useState(false)
+
+    // Filter out duplicates (Point 3B)
+    const uniqueCalls = useMemo(() => {
+        const seen = new Set();
+        return calls.filter((call: CallLog) => {
+            const key = `${call.call_id || call.id}-${call.created_at}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    }, [calls]);
 
     const handleViewTranscript = (call: CallLog) => {
         setSelectedCall(call)
@@ -55,7 +66,7 @@ export function CallTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {calls.map((call) => (
+                        {uniqueCalls.map((call: CallLog) => (
                             <TableRow key={call.id || call.call_id || Math.random()} className="hover:bg-slate-50/50">
                                 <TableCell>
                                     <Badge variant={
