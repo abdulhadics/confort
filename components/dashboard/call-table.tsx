@@ -23,12 +23,13 @@ export function CallTable() {
     const [selectedCall, setSelectedCall] = useState<CallLog | null>(null)
     const [isTranscriptOpen, setIsTranscriptOpen] = useState(false)
 
-    // Filter out duplicates (Point 3B)
+    // Filter out duplicates (Point 3B) - Aggressive filtering by call_id
     const uniqueCalls = useMemo(() => {
         const seen = new Set();
         return calls.filter((call: CallLog) => {
-            const key = `${call.call_id || call.id}-${call.created_at}`;
-            if (seen.has(key)) return false;
+            // Strictly check call_id to remove any double-saved webhooks
+            const key = call.call_id;
+            if (!key || seen.has(key)) return false;
             seen.add(key);
             return true;
         });
