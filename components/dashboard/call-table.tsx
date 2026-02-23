@@ -55,6 +55,7 @@ export function CallTable() {
                     <TableHeader className="bg-slate-50">
                         <TableRow>
                             <TableHead className="font-semibold text-slate-700">Status</TableHead>
+                            <TableHead className="font-semibold text-slate-700">Dept.</TableHead>
                             <TableHead className="font-semibold text-slate-700">Score</TableHead>
                             <TableHead className="font-semibold text-slate-700">Phone</TableHead>
                             <TableHead className="hidden md:table-cell">Summary</TableHead>
@@ -76,6 +77,15 @@ export function CallTable() {
                                     }>
                                         {call.status}
                                     </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    {call.department ? (
+                                        <Badge variant="outline" className={call.department === 'HVAC' || call.department?.includes('CVC') ? 'border-orange-200 text-orange-700 bg-orange-50' : 'border-blue-200 text-blue-700 bg-blue-50'}>
+                                            {call.department}
+                                        </Badge>
+                                    ) : (
+                                        <span className="text-slate-400 text-xs">-</span>
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center gap-2">
